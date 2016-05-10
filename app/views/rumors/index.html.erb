@@ -1,0 +1,30 @@
+<h1>Rumors</h1>
+<form action="logout" method="post">
+  <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+  <input type='hidden' name="_method" value="destroy">
+  <button type="submit">Log Out</button>
+</form>
+
+<% @rumor.each do |rumor| %>
+<p> <%= rumor.content %>&emsp;
+  <% if session[:id] == session[:active] %>
+  <%= button_to "delete", {:controller => :rumors,
+      :action => 'destroy', :id => rumor.id }, :method => :delete %>
+  <% end %>
+<p><%= rumor.likes.count %> likes</p>
+<% if @rumors_liked.include?(rumor.id) %>
+  <form action="unlike" method="post">
+    <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+    <input type="hidden" name="rumor_id" value="<%= rumor.id%>">
+    <input type="submit" name="unlike" value="Unlike">
+  </form>
+<% else %>
+  <form action="like" method="post">
+    <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+    <input type="hidden" name="rumor_id" value="<%= rumor.id%>">
+    <input type="submit" name="like" value="Like">
+  </form>
+<% end %>
+<% end %>
+<br>
+<a href="/users/<%= session[:id] %>"><button type="button" name="new_rumor">Create New Rumor</button></a>

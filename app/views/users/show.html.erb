@@ -1,0 +1,36 @@
+<h1><%= @user.name %></h1>
+
+  <% if flash[:success] %>
+    <font color = 'green'>
+      <%= flash[:success] %>
+    </font>
+  <% end %>
+
+  <form action="logout" method="post">
+    <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+    <input type='hidden' name="_method" value="destroy">
+    <button type="submit">Log Out</button>
+  </form>
+
+<h3>New Secret</h3>
+
+<form action="/rumors" method="post" id="rumors_created">
+  <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
+  <textarea name="rumor[content]" rows="8" cols="30"></textarea>
+  <input type="submit" value="Create Rumor">
+</form>
+
+<h5>Rumors</h5>
+<% @rumors_create.each do |x| %>
+  <p> <%= x.content %>&emsp;
+  <p><%= x.likes.count %> likes</p>
+<% end %>
+
+
+<h5>Rumors Liked</h5>
+<% if @rumors_liked %>
+  <% @rumors_liked.each do |rumors| %>
+    <p><%= rumors.content %></p>
+    <p><%= rumors.likes.count %> likes</p>
+  <% end %>
+<% end %>
